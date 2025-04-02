@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>兒童節AI終極密碼挑戰</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      text-align: center;
+      background: #fff9f0;
+    }
+    input[type="number"] {
+      padding: 0.5rem;
+      font-size: 1.2rem;
+      width: 100px;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+    .result {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      min-height: 2em;
+    }
+    @media (max-width: 600px) {
+      input[type="number"], button {
+        width: 80%;
+        font-size: 1rem;
+      }
+    }
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: #ff0;
+      animation: fall 3s linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-10px); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    .animate {
+      animation: bounce 0.6s ease;
+    }
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 兒童節AI終極密碼挑戰</h1>
+  <p>請輸入你猜的密碼（30 到 50 之間）</p>
+  <input type="number" id="guess" min="30" max="50" />
+  <br><br>
+  <button onclick="checkGuess()">提交</button>
+  <div class="result" id="result"></div>
+
+  <script>
+    const answer = 44;
+    let guessedCorrectly = false;
+    let attempts = 0;
+    const issuedCodes = new Set();
+
+    function generateCode() {
+      let code;
+      do {
+        code = Math.floor(1000 + Math.random() * 9000).toString();
+      } while (issuedCodes.has(code));
+      issuedCodes.add(code);
+      return code;
+    }
+
+    function checkGuess() {
+      if (guessedCorrectly) return;
+      const input = document.getElementById("guess").value;
+      const resultDiv = document.getElementById("result");
+      const guess = Number(input);
+      attempts++;
+
+      if (guess === answer) {
+        guessedCorrectly = true;
+        const code = generateCode();
+        resultDiv.innerHTML = `🎉 恭喜你猜中AI終極密碼！<br>你的專屬中獎序號是：${code}<br>你總共猜了 ${attempts} 次！<br>請在貼文下留言 @一位朋友 文字留下`;
+        resultDiv.classList.add("animate");
+        showConfetti();
+      } else if (guess > answer) {
+        resultDiv.innerHTML = "太高了，再試一次！";
+      } else {
+        resultDiv.innerHTML = "太低了，再試一次！";
+      }
+    }
+
+    function showConfetti() {
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 60%)`;
+        confetti.style.animationDelay = Math.random() * 3 + "s";
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    }
+  </script>
+</body>
+</html>

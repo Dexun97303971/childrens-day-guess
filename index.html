@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>兒童節AI終極密碼挑戰</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; padding: 2rem; text-align: center; }
+    input[type="number"] { padding: 0.5rem; font-size: 1.2rem; width: 100px; }
+    button { padding: 0.6rem 1.2rem; font-size: 1.2rem; margin-top: 1rem; }
+    .result { margin-top: 2rem; font-size: 1.5rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🎉 兒童節AI終極密碼挑戰</h1>
+  <p>請輸入你猜的密碼（30 到 50 之間）</p>
+  <input type="number" id="guess" min="30" max="50" />
+  <br/>
+  <button onclick="checkGuess()">提交</button>
+  <div class="result" id="result"></div>
+
+  <script>
+    const answer = 44;
+    let guessed = false;
+    let issuedCodes = new Set();
+    function generateCode() {
+      let code;
+      do {
+        code = Math.floor(1000 + Math.random() * 9000).toString();
+      } while (issuedCodes.has(code));
+      issuedCodes.add(code);
+      return code;
+    }
+
+    function checkGuess() {
+      const input = document.getElementById("guess").value;
+      const result = document.getElementById("result");
+      if (guessed) {
+        result.textContent = "⚠️ 你已經參加過囉，每人僅限一次！";
+        return;
+      }
+      const guess = parseInt(input);
+      if (isNaN(guess) || guess < 30 || guess > 50) {
+        result.textContent = "請輸入 30 到 50 之間的數字。";
+        return;
+      }
+      if (guess === answer) {
+        const code = generateCode();
+        result.innerHTML = `🎉 恭喜你猜中AI終極密碼！<br>你的專屬中獎序號是：<strong>${code}</strong><br>請在貼文下留言 @一位朋友 我猜中了！及專屬中獎序號 ${code}`;
+      } else {
+        result.textContent = "很可惜，猜錯了！再接再厲～";
+      }
+      guessed = true;
+    }
+  </script>
+</body>
+</html>
